@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sensi Master 2</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,sans-serif;
+}
+
+body{
+  background:#07111f;
+  color:#fff;
+  min-height:100vh;
+}
+
+.top{
+  text-align:center;
+  padding:25px 15px;
+  background:#0b1d33;
+  border-bottom:1px solid #17395c;
+}
+
+.logo{
+  font-size:30px;
+  font-weight:900;
+  color:#35a7ff;
+  text-shadow:0 0 15px #1689e8;
+}
+
+.subtitle{
+  margin-top:6px;
+  color:#9db5cc;
+  font-size:14px;
+}
+
+.container{
+  width:100%;
+  max-width:600px;
+  margin:auto;
+  padding:15px;
+}
+
+.card{
+  background:#0c1b2d;
+  border:1px solid #183b5d;
+  border-radius:16px;
+  padding:18px;
+  margin-bottom:15px;
+  box-shadow:0 8px 25px rgba(0,0,0,.25);
+}
+
+.card h2{
+  font-size:18px;
+  margin-bottom:15px;
+  color:#4eb3ff;
+}
+
+label{
+  display:block;
+  margin:10px 0 6px;
+  color:#b8cce0;
+  font-size:14px;
+}
+
+input,
+select{
+  width:100%;
+  padding:13px;
+  border-radius:10px;
+  border:1px solid #285274;
+  background:#071522;
+  color:#fff;
+  outline:none;
+}
+
+input:focus,
+select:focus{
+  border-color:#35a7ff;
+}
+
+button{
+  width:100%;
+  border:0;
+  border-radius:11px;
+  padding:14px;
+  margin-top:10px;
+  font-size:15px;
+  font-weight:bold;
+  color:white;
+  background:#1689e8;
+  cursor:pointer;
+}
+
+button:active{
+  transform:scale(.98);
+}
+
+.generate{
+  background:linear-gradient(135deg,#1689e8,#35b8ff);
+  font-size:17px;
+  box-shadow:0 0 18px rgba(24,137,232,.35);
+}
+
+.calibrate{
+  background:#185d91;
+}
+
+.danger{
+  background:#74343d;
+}
+
+.green{
+  background:#16784f;
+}
+
+.rangeRow{
+  margin-bottom:13px;
+}
+
+.rangeTop{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:5px;
+  font-size:13px;
+}
+
+.rangeValue{
+  color:#42b5ff;
+  font-weight:bold;
+}
+
+input[type="range"]{
+  padding:0;
+  accent-color:#28a7ff;
+}
+
+.resultGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.result{
+  background:#071522;
+  border:1px solid #20445f;
+  border-radius:11px;
+  padding:13px;
+  text-align:center;
+}
+
+.result span{
+  display:block;
+  color:#94aec5;
+  font-size:12px;
+  margin-bottom:5px;
+}
+
+.result strong{
+  color:#fff;
+  font-size:23px;
+}
+
+.status{
+  margin-top:12px;
+  padding:11px;
+  border-radius:9px;
+  background:#071522;
+  color:#9fc0d9;
+  font-size:13px;
+  text-align:center;
+}
+
+.hidden{
+  display:none;
+}
+
+.checkbox{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  margin-top:13px;
+  color:#bdd1e3;
+  font-size:14px;
+}
+
+.checkbox input{
+  width:auto;
+}
+
+.footer{
+  text-align:center;
+  padding:20px;
+  color:#607b91;
+  font-size:12px;
+}
+</style>
+</head>
+
+<body>
+
+<header class="top">
+  <div class="logo">Sensi Master 2</div>
+  <div class="subtitle">Gerador e calibrador de sensibilidade</div>
+</header>
+
+<main class="container">
+
+  <!-- CELULAR -->
+  <section class="card">
+    <h2>📱 Configuração do celular</h2>
+
+    <label for="brand">Marca do celular</label>
+    <select id="brand">
+      <option value="redmi">Redmi</option>
+      <option value="xiaomi">Xiaomi</option>
+      <option value="samsung">Samsung</option>
+      <option value="motorola">Motorola</option>
+      <option value="realme">Realme</option>
+      <option value="outra">Outra</option>
+    </select>
+
+    <label for="model">Modelo do celular</label>
+    <input
+      id="model"
+      type="text"
+      value="Redmi Note 9S"
+      placeholder="Ex.: Redmi Note 9S"
+    >
+
+    <label for="style">Estilo da sensibilidade</label>
+    <select id="style">
+      <option value="medium">Média</option>
+      <option value="fast">Rápida</option>
+      <option value="smooth">Suave</option>
+      <option value="custom">Personalizada</option>
+      <option value="advanced">Avançada</option>
+    </select>
+  </section>
+
+  <!-- PERSONALIZADA -->
+  <section id="customCard" class="card hidden">
+    <h2>🎯 Sensibilidade personalizada</h2>
+
+    <div class="rangeRow">
+      <div class="rangeTop">
+        <span>Geral</span>
+        <span id="geralLabel" class="rangeValue">100</span>
+      </div>
+      <input id="geralRange" type="range" min="0" max="200" value="100">
+    </div>
+
+    <div class="rangeRow">
+      <div class="rangeTop">
+        <span>Ponto vermelho</span>
+        <span id="redLabel" class="rangeValue">95</span>
+      </div>
+      <input id="redRange" type="range" min="0" max="200" value="95">
+    </div>
+
+    <div class="rangeRow">
+      <div class="rangeTop">
+        <span>Mira 2×</span>
+        <span id="x2Label" class="rangeValue">90</span>
+      </div>
+      <input id="x2Range" type="range" min="0" max="200" value="90">
+    </div>
+
+    <div class="rangeRow">
+      <div class="rangeTop">
+        <span>Mira 4×</span>
+        <span id="x4Label" class="rangeValue">85</span>
+      </div>
+      <input id="x4Range" type="range" min="0" max="200" value="85">
+    </div>
+
+    <div class="rangeRow">
+      <div class="rangeTop">
+        <span>AWM</span>
+        <span id="awmLabel" class="rangeValue">75</span>
+      </div>
+      <input id="awmRange" type="range" min="0" max="200" value="75">
+    </div>
+
+    <div class="rangeRow">
+      <div class="rangeTop">
+        <span>Olhadinha</span>
+        <span id="lookLabel" class="rangeValue">100</span>
+      </div>
+      <input id="lookRange" type="range" min="0" max="200" value="100">
+    </div>
+  </section>
+
+  <!-- CALIBRAÇÃO -->
+  <section class="card">
+    <h2>🎯 Calibrar mira</h2>
+
+    <div class="rangeRow">
+      <div class="rangeTop">
+        <span>Precisão</span>
+        <span id="precisionLabel" class="rangeValue">75</span>
+      </div>
+      <input id="precision" type="range" min="0" max="100" value="75">
+    </div>
+
+    <div class="rangeRow">
+      <div class="rangeTop">
+        <span>Estabilidade</span>
+        <span id="stabilityLabel" class="rangeValue">70</span>
+      </div>
+      <input id="stability" type="range" min="0" max="100" value="70">
+    </div>
+
+    <div class="rangeRow">
+      <div class="rangeTop">
+        <span>Resposta do toque</span>
+        <span id="touchLabel" class="rangeValue">80</span>
+      </div>
+      <input id="touch" type="range" min="0" max="100" value="80">
+    </div>
+
+    <label class="checkbox">
+      <input id="noRecoil" type="checkbox">
+      Modo estabilidade (simulação)
+    </label>
+
+    <button id="calibrateBtn" class="calibrate" type="button">
+      🎯 CALIBRAR MIRA
+    </button>
+  </section>
+
+  <!-- GERADOR -->
+  <section class="card">
+    <h2>⚡ Gerador</h2>
+
+    <button
+      id="generate"
+      class="generate"
+      type="button"
+      onclick="generateSense()"
+    >
+      ⚡ GERAR SENSE
+    </button>
+
+    <div class="resultGrid" style="margin-top:15px">
+
+      <div class="result">
+        <span>Geral</span>
+        <strong id="resultGeral">—</strong>
+      </div>
+
+      <div class="result">
+        <span>Ponto vermelho</span>
+        <strong id="resultRed">—</strong>
+      </div>
+
+      <div class="result">
+        <span>Mira 2×</span>
+        <strong id="resultX2">—</strong>
+      </div>
+
+      <div class="result">
+        <span>Mira 4×</span>
+        <strong id="resultX4">—</strong>
+      </div>
+
+      <div class="result">
+        <span>AWM</span>
+        <strong id="resultAWM">—</strong>
+      </div>
+
+      <div class="result">
+        <span>Olhadinha</span>
+        <strong id="resultLook">—</strong>
+      </div>
+
+    </div>
+
+    <div id="status" class="status">
+      Pronto para gerar sua sensibilidade.
+    </div>
+  </section>
+
+  <!-- INFINITO -->
+  <section class="card">
+    <h2>♾️ Limite da sensibilidade</h2>
+
+    <label class="checkbox">
+      <input id="infinite" type="checkbox">
+      Ativar Infinito 1980
+    </label>
+
+    <div id="infiniteStatus" class="status">
+      Limite atual: 200
+    </div>
+  </section>
+
+  <!-- PAINEL PROTEGIDO -->
+  <section class="card">
+    <h2>🔐 Painel protegido</h2>
+
+    <input
+      id="password"
+      type="password"
+      inputmode="numeric"
+      placeholder="Digite a senha"
+    >
+
+    <button id="unlockBtn" type="button">
+      🔓 DESBLOQUEAR
+    </button>
+
+    <div id="adminPanel" class="hidden">
+
+      <label for="customLimit">
+        Limite personalizado
+      </label>
+
+      <input
+        id="customLimit"
+        type="number"
+        min="1"
+        max="1980"
+        value="200"
+      >
+
+      <button id="saveConfigBtn" class="green" type="button">
+        💾 SALVAR CONFIGURAÇÃO
+      </button>
+
+      <button id="lockBtn" class="danger" type="button">
+        🔒 BLOQUEAR PAINEL
+      </button>
+
+      <div id="adminStatus" class="status"></div>
+    </div>
+  </section>
+
+</main>
+
+<div class="footer">
+  Sensi Master 2 • Configuração e simulação local
+</div>
+
+<script>
+"use strict";
+
+/* =========================
+   CONFIGURAÇÃO
+========================= */
+
+const PASSWORD = "99";
+
+let maxValue = 200;
+let infinite1980 = false;
+let lastGenerated = false;
+
+
+/* =========================
+   FUNÇÕES SEGURAS
+========================= */
+
+function el(id){
+  return document.getElementById(id);
+}
+
+function setText(id, value){
+  const element = el(id);
+
+  if(element){
+    element.textContent = value;
+  }
+}
+
+function clamp(value, min, max){
+  return Math.max(min, Math.min(max, value));
+}
+
+function num(id, fallback){
+  const element = el(id);
+
+  if(!element){
+    return fallback;
+  }
+
+  const value = Number(element.value);
+
+  return Number.isFinite(value) ? value : fallback;
+}
+
+
+/* =========================
+   BASE DO CELULAR
+========================= */
+
+function getBase(){
+
+  const brand = el("brand");
+  const model = el("model");
+
+  if(!brand || !model){
+    return 100;
+  }
+
+  const brandValue = brand.value;
+  const modelValue = model.value.toLowerCase();
+
+  let base = 100;
+
+  if(brandValue === "redmi"){
+    base = 105;
+  }
+
+  if(brandValue === "xiaomi"){
+    base = 105;
+  }
+
+  if(brandValue === "samsung"){
+    base = 100;
+  }
+
+  if(brandValue === "motorola"){
+    base = 98;
+  }
+
+  if(brandValue === "realme"){
+    base = 103;
+  }
+
+  if(modelValue.includes("note 9s")){
+    base = 108;
+  }
+
+  return base;
+}
+
+
+/* =========================
+   GERAR SENSE
+========================= */
+
+function generateSense(){
+
+  try{
+
+    const style = el("style");
+    const brand = el("brand");
+    const model = el("model");
+
+    if(!style || !brand || !model){
+
+      setText(
+        "status",
+        "⚠️ Não foi possível carregar os elementos."
+      );
+
+      return;
+    }
+
+    const modelName = model.value.trim();
+
+    if(modelName === ""){
+
+      setText(
+        "status",
+        "⚠️ Digite o modelo do celular."
+      );
+
+      model.focus();
+
+      return;
+    }
+
+    const base = getBase();
+
+    let geral = base;
+    let red = base - 4;
+    let x2 = base - 10;
+    let x4 = base - 17;
+    let awm = base - 25;
+    let look = base - 2;
+
+    switch(style.value){
+
+      case "medium":
+
+        geral = base;
+        red = base - 4;
+        x2 = base - 10;
+        x4 = base - 17;
+        awm = base - 25;
+        look = base - 2;
+
+        break;
+
+      case "fast":
+
+        geral = base + 20;
+        red = base + 17;
+        x2 = base + 12;
+        x4 = base + 7;
+        awm = base - 5;
+        look = base + 15;
+
+        break;
+
+      case "smooth":
+
+        geral = base - 12;
+        red = base - 15;
+        x2 = base - 20;
+        x4 = base - 25;
+        awm = base - 30;
+        look = base - 10;
+
+        break;
+
+      case "custom":
+
+        geral = num("geralRange", 100);
+        red = num("redRange", 95);
+        x2 = num("x2Range", 90);
+        x4 = num("x4Range", 85);
+        awm = num("awmRange", 75);
+        look = num("lookRange", 100);
+
+        break;
+
+      case "advanced":
+
+        geral = base + 18;
+        red = base + 14;
+        x2 = base + 8;
+        x4 = base + 1;
+        awm = base - 12;
+        look = base + 12;
+
+        break;
+    }
+
+    geral = clamp(Math.round(geral), 0, maxValue);
+    red = clamp(Math.round(red), 0, maxValue);
+    x2 = clamp(Math.round(x2), 0, maxValue);
+    x4 = clamp(Math.round(x4), 0, maxValue);
+    awm = clamp(Math.round(awm), 0, maxValue);
+    look = clamp(Math.round(look), 0, maxValue);
+
+    setText("resultGeral", geral);
+    setText("resultRed", red);
+    setText("resultX2", x2);
+    setText("resultX4", x4);
+    setText("resultAWM", awm);
+    setText("resultLook", look);
+
+    lastGenerated = true;
+
+    setText(
+      "status",
+      "✓ Sense gerada para " +
+      modelName +
+      " • limite: " +
+      maxValue
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    setText(
+      "status",
+      "⚠️ Erro ao gerar a sensibilidade."
+    );
+  }
+}
+
+
+/* =========================
+   CALIBRAR MIRA
+========================= */
+
+function calibrate(){
+
+  if(!lastGenerated){
+    generateSense();
+  }
+
+  const geralElement = el("resultGeral");
+
+  if(!geralElement || geralElement.textContent === "—"){
+    return;
+  }
+
+  const precision = num("precision", 75);
+  const stability = num("stability", 70);
+  const touch = num("touch", 80);
+
+  const factor =
+    precision * 0.40 +
+    stability * 0.30 +
+    touch * 0.30;
+
+  const adjustment =
+    (factor - 50) * 0.20;
+
+  let geral = Number(geralElement.textContent);
+  let red = Number(el("resultRed").textContent);
+  let x2 = Number(el("resultX2").textContent);
+  let x4 = Number(el("resultX4").textContent);
+  let awm = Number(el("resultAWM").textContent);
+  let look = Number(el("resultLook").textContent);
+
+  geral += adjustment;
+  red += adjustment * 0.95;
+  x2 += adjustment * 0.85;
+  x4 += adjustment * 0.75;
+  awm += adjustment * 0.60;
+  look += adjustment * 0.90;
+
+  if(el("noRecoil") && el("noRecoil").checked){
+
+    red += 3;
+    x2 += 3;
+    x4 += 4;
+    awm += 4;
+  }
+
+  geral = clamp(Math.round(geral), 0, maxValue);
+  red = clamp(Math.round(red), 0, maxValue);
+  x2 = clamp(Math.round(x2), 0, maxValue);
+  x4 = clamp(Math.round(x4), 0, maxValue);
+  awm = clamp(Math.round(awm), 0, maxValue);
+  look = clamp(Math.round(look), 0, maxValue);
+
+  setText("resultGeral", geral);
+  setText("resultRed", red);
+  setText("resultX2", x2);
+  setText("resultX4", x4);
+  setText("resultAWM", awm);
+  setText("resultLook", look);
+
+  setText(
+    "status",
+    "✓ Mira calibrada."
+  );
+}
+
+
+/* =========================
+   LIMITE
+========================= */
+
+function applyMaxLimit(value){
+
+  value = Number(value);
+
+  if(!Number.isFinite(value)){
+    value = 200;
+  }
+
+  value = clamp(Math.round(value), 1, 1980);
+
+  maxValue = value;
+
+  infinite1980 = value === 1980;
+
+  if(el("customLimit")){
+    el("customLimit").value = value;
+  }
+
+  if(el("infinite")){
+    el("infinite").checked = infinite1980;
+  }
+
+  const ranges = [
+    "geralRange",
+    "redRange",
+    "x2Range",
+    "x4Range",
+    "awmRange",
+    "lookRange"
+  ];
+
+  ranges.forEach(function(id){
+
+    const range = el(id);
+
+    if(!range){
+      return;
+    }
+
+    range.max = maxValue;
+
+    if(Number(range.value) > maxValue){
+      range.value = maxValue;
+    }
+  });
+
+  setText(
+    "infiniteStatus",
+    "Limite atual: " + maxValue
+  );
+}
+
+
+/* =========================
+   INFINITO 1980
+========================= */
+
+function updateInfinite(){
+
+  const checkbox = el("infinite");
+
+  if(!checkbox){
+    return;
+  }
+
+  if(checkbox.checked){
+    applyMaxLimit(1980);
+  }else{
+    applyMaxLimit(200);
+  }
+}
+
+
+/* =========================
+   PAINEL PROTEGIDO
+========================= */
+
+function unlockPanel(){
+
+  const password = el("password");
+  const adminPanel = el("adminPanel");
+
+  if(!password || !adminPanel){
+    return;
+  }
+
+  if(password.value === PASSWORD){
+
+    adminPanel.classList.remove("hidden");
+
+    setText(
+      "adminStatus",
+      "✓ Painel desbloqueado."
+    );
+
+  }else{
+
+    setText(
+      "adminStatus",
+      "❌ Senha incorreta."
+    );
+  }
+}
+
+
+function saveConfig(){
+
+  const limit = num("customLimit", 200);
+
+  if(limit < 1 || limit > 1980){
+
+    setText(
+      "adminStatus",
+      "⚠️ O limite deve estar entre 1 e 1980."
+    );
+
+    return;
+  }
+
+  applyMaxLimit(limit);
+
+  setText(
+    "adminStatus",
+    "✓ Configuração salva."
+  );
+}
+
+
+function lockPanel(){
+
+  const adminPanel = el("adminPanel");
+  const password = el("password");
+
+  if(adminPanel){
+    adminPanel.classList.add("hidden");
+  }
+
+  if(password){
+    password.value = "";
+  }
+
+  setText(
+    "adminStatus",
+    "Painel bloqueado."
+  );
+}
+
+
+/* =========================
+   SLIDERS
+========================= */
+
+function setupRange(inputId, labelId){
+
+  const input = el(inputId);
+  const label = el(labelId);
+
+  if(!input || !label){
+    return;
+  }
+
+  function update(){
+
+    label.textContent = input.value;
+  }
+
+  input.addEventListener("input", update);
+
+  update();
+}
+
+
+/* =========================
+   PAINEL PERSONALIZADO
+========================= */
+
+function updateCustomPanel(){
+
+  const style = el("style");
+  const customCard = el("customCard");
+
+  if(!style || !customCard){
+    return;
+  }
+
+  if(style.value === "custom"){
+    customCard.classList.remove("hidden");
+  }else{
+    customCard.classList.add("hidden");
+  }
+}
+
+
+/* =========================
+   INICIALIZAÇÃO
+========================= */
+
+document.addEventListener("DOMContentLoaded", function(){
+
+  setupRange("geralRange", "geralLabel");
+  setupRange("redRange", "redLabel");
+  setupRange("x2Range", "x2Label");
+  setupRange("x4Range", "x4Label");
+  setupRange("awmRange", "awmLabel");
+  setupRange("lookRange", "lookLabel");
+
+  setupRange("precision", "precisionLabel");
+  setupRange("stability", "stabilityLabel");
+  setupRange("touch", "touchLabel");
+
+  applyMaxLimit(200);
+
+  updateCustomPanel();
+
+  const style = el("style");
+  const infinite = el("infinite");
+  const calibrateBtn = el("calibrateBtn");
+  const unlockBtn = el("unlockBtn");
+  const saveConfigBtn = el("saveConfigBtn");
+  const lockBtn = el("lockBtn");
+  const password = el("password");
+
+  if(style){
+    style.addEventListener(
+      "change",
+      updateCustomPanel
+    );
+  }
+
+  if(infinite){
+    infinite.addEventListener(
+      "change",
+      updateInfinite
+    );
+  }
+
+  if(calibrateBtn){
+    calibrateBtn.addEventListener(
+      "click",
+      calibrate
+    );
+  }
+
+  if(unlockBtn){
+    unlockBtn.addEventListener(
+      "click",
+      unlockPanel
+    );
+  }
+
+  if(saveConfigBtn){
+    saveConfigBtn.addEventListener(
+      "click",
+      saveConfig
+    );
+  }
+
+  if(lockBtn){
+    lockBtn.addEventListener(
+      "click",
+      lockPanel
+    );
+  }
+
+  if(password){
+    password.addEventListener(
+      "keydown",
+      function(event){
+
+        if(event.key === "Enter"){
+          unlockPanel();
+        }
+      }
+    );
+  }
+
+});
+
+
+/* Necessário para o botão GERAR SENSE */
+window.generateSense = generateSense;
+
+</script>
+
+</body>
+</html>
